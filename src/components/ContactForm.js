@@ -247,9 +247,11 @@ const ContactForm = () => {
     setInvalidForm(true);
   }
 
-  const handleSubmit = (form) => {
-    form.preventDefault();
+  const handleSubmit = (event) => {
+    event.preventDefault();
     handleValidation();
+
+    console.log('submitting');
 
     if (!invalidForm) {
       setIsSubmitting(true);
