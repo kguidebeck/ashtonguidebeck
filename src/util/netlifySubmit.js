@@ -12,10 +12,17 @@ const netlifySubmit = async (values) => {
     formData.append(keys[i], values[keys[i]]);
   }
 
+  // return fetch("/", {
+  //   method: "POST",
+  //   headers: { "Content-Type": "application/x-www-form-urlencoded" },
+  //   body: formData
+  // });
+
   return axios({
     method: 'post',
     url: '/',
-    headers: { 'Content-Type': 'multipart/form-data' },
+    // headers: { 'Content-Type': 'multipart/form-data' },
+    headers: { "Content-Type": "application/x-www-form-urlencoded" },
     data: formData,
   });
 };

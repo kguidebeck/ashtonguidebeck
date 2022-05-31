@@ -115,8 +115,9 @@ const ContactForm = () => {
     emailAddress: '',
     message: '',
   };
-  const [values, setValues] = useState({});
-  const [errors, setErrors] = useState({...initialValues});
+  const [values, setValues] = useState({...initialValues});
+  const [errors, setErrors] = useState({});
+  const [invalidForm, setInvalidForm] = useState(true);
 
 
   const handleValidation = () => {
@@ -150,6 +151,10 @@ const ContactForm = () => {
         ...prevState,
         'message': 'Please provide a brief message.'
       }));
+    }
+
+    if (Object.keys(errors).length === 0) {
+      setInvalidForm(false);
     }
   };
 
@@ -229,24 +234,26 @@ const ContactForm = () => {
   const resetForm = () => {
     setErrors({});
     setValues({...initialValues});
+    setInvalidForm(true);
   }
 
   const handleSubmit = (form) => {
     form.preventDefault();
-    setIsSubmitting(true);
     handleValidation();
 
-    netlifySubmit(values)
-      .then(() => {
-        setIsSubmitting(false);
-        resetForm();
-      })
-      .catch((error) => {
-        // eslint-disable-next-line no-console
-        console.log(error);
-      });
+    if (!invalidForm) {
+      setIsSubmitting(true);
 
-    
+      netlifySubmit(values)
+        .then(() => {
+          setIsSubmitting(false);
+          resetForm();
+        })
+        .catch((error) => {
+          // eslint-disable-next-line no-console
+          console.log(error);
+        });
+    }
   };
 
   return (
@@ -261,7 +268,6 @@ const ContactForm = () => {
           name="form-name"
           value="contact"
           type="hidden"
-          readOnly
         />
         <label htmlFor="bot-field">
           Don&apos;t fill this out if you&apos;re human:
@@ -333,7 +339,12 @@ const ContactForm = () => {
         <StyledSubmit
           type="submit"
           disabled={isSubmitting}
-        >Let’s Connect</StyledSubmit>
+        >
+          {isSubmitting
+            ? 'Submitting'
+            : 'Let’s Connect'
+          }
+        </StyledSubmit>
       </InputWrap>
     </StyledForm>
   );

@@ -32,7 +32,6 @@ const globalStyles = globalCss({
     marginBottom: '.125em',
     fontWeight: '400',
     lineHeight: 1,
-    // color: '$blue',
     color: '$darkBlue',
     fontFamily: '$noto',
     textTransform: 'uppercase'
@@ -59,8 +58,6 @@ const globalStyles = globalCss({
 
     '&:disabled': {
       pointerEvents: 'none',
-      borderColor: '$grayMid',
-      color: '$grayText',
     },
   },
 
