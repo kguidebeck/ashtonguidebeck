@@ -106,6 +106,16 @@ const StyledError = styled('span', {
   color: '$coral',
 });
 
+const ThankYou = styled('span', {
+  display: 'block',
+  fontFamily: '$noto',
+  fontSize: '18px',
+  textTransform: 'uppercase',
+  color: '$darkBlue',
+  textAlign: 'center',
+  marginTop: '20px',
+});
+
 const ContactForm = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const initialValues = { 
@@ -118,7 +128,7 @@ const ContactForm = () => {
   const [values, setValues] = useState({...initialValues});
   const [errors, setErrors] = useState({});
   const [invalidForm, setInvalidForm] = useState(true);
-
+  const [submissonComplete, setSubmissonComplete] = useState(false);
 
   const handleValidation = () => {
     if (!values.firstName) {
@@ -246,6 +256,7 @@ const ContactForm = () => {
 
       netlifySubmit(values)
         .then(() => {
+          setSubmissonComplete(true);
           setIsSubmitting(false);
           resetForm();
         })
@@ -257,96 +268,105 @@ const ContactForm = () => {
   };
 
   return (
-    <StyledForm
-      name="contact"
-      data-netlify="true"
-      data-netlify-honeypot="bot-field"
-      onSubmit={handleSubmit}
-    >
-      <VisuallyHidden>
-        <input
-          name="form-name"
-          value="contact"
-          type="hidden"
-        />
-        <label htmlFor="bot-field">
-          Don&apos;t fill this out if you&apos;re human:
-          <input name="bot-field" />
-        </label>
-      </VisuallyHidden>
+    <>
+      <StyledForm
+        name="contact"
+        data-netlify="true"
+        data-netlify-honeypot="bot-field"
+        onSubmit={handleSubmit}
+      >
+        <VisuallyHidden>
+          <input
+            name="form-name"
+            value="contact"
+            type="hidden"
+          />
+          <label htmlFor="bot-field">
+            Don&apos;t fill this out if you&apos;re human:
+            <input name="bot-field" />
+          </label>
+        </VisuallyHidden>
 
-      <InputWrap>
-        <StyledLabel htmlFor="firstName">First Name</StyledLabel>
-        <StyledInput
-          type="text"
-          name="firstName"
-          id="firstName"
-          onChange={handleChange}
-          onBlur={handleBlur}
-        />
-        {errors.firstName ?
-          <StyledError>{errors.firstName}</StyledError>
-          : null
-        }
-      </InputWrap>
-
-      <InputWrap>
-        <StyledLabel htmlFor="lastName">Last Name</StyledLabel>
-        <StyledInput
-          type="text"
-          name="lastName"
-          id="lastName"
-          onChange={handleChange}
-          onBlur={handleBlur}
-        />
-        {errors.lastName ?
-          <StyledError>{errors.lastName}</StyledError>
-          : null
-        }
-      </InputWrap>
-
-      <InputWrap width="full">
-        <StyledLabel htmlFor="emailAddress">Email Address</StyledLabel>
-        <StyledInput
-          type="email"
-          name="emailAddress"
-          id="emailAddress"
-          onChange={handleChange}
-          onBlur={handleBlur}
-        />
-        {errors.emailAddress ?
-          <StyledError>{errors.emailAddress}</StyledError>
-          : null
-        }
-      </InputWrap>
-
-      <InputWrap width="full">
-        <StyledLabel htmlFor="message">Message</StyledLabel>
-        <StyledTextArea
-          name="message"
-          id="message"
-          onChange={handleChange}
-          onBlur={handleBlur}
-          rows="4"
-        />
-        {errors.message ?
-          <StyledError>{errors.message}</StyledError>
-          : null
-        }
-      </InputWrap>
-
-      <InputWrap width="full" className="submit">
-        <StyledSubmit
-          type="submit"
-          disabled={isSubmitting}
-        >
-          {isSubmitting
-            ? 'Submitting'
-            : 'Let’s Connect'
+        <InputWrap>
+          <StyledLabel htmlFor="firstName">First Name</StyledLabel>
+          <StyledInput
+            type="text"
+            name="firstName"
+            id="firstName"
+            onChange={handleChange}
+            onBlur={handleBlur}
+          />
+          {errors.firstName ?
+            <StyledError>{errors.firstName}</StyledError>
+            : null
           }
-        </StyledSubmit>
-      </InputWrap>
-    </StyledForm>
+        </InputWrap>
+
+        <InputWrap>
+          <StyledLabel htmlFor="lastName">Last Name</StyledLabel>
+          <StyledInput
+            type="text"
+            name="lastName"
+            id="lastName"
+            onChange={handleChange}
+            onBlur={handleBlur}
+          />
+          {errors.lastName ?
+            <StyledError>{errors.lastName}</StyledError>
+            : null
+          }
+        </InputWrap>
+
+        <InputWrap width="full">
+          <StyledLabel htmlFor="emailAddress">Email Address</StyledLabel>
+          <StyledInput
+            type="email"
+            name="emailAddress"
+            id="emailAddress"
+            onChange={handleChange}
+            onBlur={handleBlur}
+          />
+          {errors.emailAddress ?
+            <StyledError>{errors.emailAddress}</StyledError>
+            : null
+          }
+        </InputWrap>
+
+        <InputWrap width="full">
+          <StyledLabel htmlFor="message">Message</StyledLabel>
+          <StyledTextArea
+            name="message"
+            id="message"
+            onChange={handleChange}
+            onBlur={handleBlur}
+            rows="4"
+          />
+          {errors.message ?
+            <StyledError>{errors.message}</StyledError>
+            : null
+          }
+        </InputWrap>
+
+        <InputWrap width="full" className="submit">
+          <StyledSubmit
+            type="submit"
+            disabled={isSubmitting}
+          >
+            {isSubmitting
+              ? 'Submitting'
+              : 'Let’s Connect'
+            }
+          </StyledSubmit>
+        </InputWrap>
+
+        {submissonComplete ?
+          <InputWrap width="full">
+            <ThankYou>Thank you for your message, I will be in touch soon.</ThankYou>
+          </InputWrap>
+          : null
+        }
+      </StyledForm>
+    </>
   );
 };
 
